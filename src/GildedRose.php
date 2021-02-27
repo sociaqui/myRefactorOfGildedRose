@@ -36,60 +36,48 @@ final class GildedRose
     {
         foreach ($this->items as $item) {
 
-            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                $item->sell_in--;
-            }
-
             switch ($item->name) {
                 case 'Sulfuras, Hand of Ragnaros':
                     break;
                 case 'Aged Brie':
-                    if ($item->quality < 50) {
-                        $item->quality++;
-                    }
+                    $item->quality++;
                     if ($item->sell_in < 0) {
-                        if ($item->quality < 50) {
-                            $item->quality++;
-                        }
+                        $item->quality++;
                     }
                     break;
                 case 'Backstage passes to a TAFKAL80ETC concert':
-                    if ($item->quality < 50) {
+                    $item->quality++;
+                    if ($item->sell_in < 10) {
                         $item->quality++;
                     }
-                    if ($item->sell_in < 10) {
-                        if ($item->quality < 50) {
-                            $item->quality++;
-                        }
-                    }
                     if ($item->sell_in < 5) {
-                        if ($item->quality < 50) {
-                            $item->quality++;
-                        }
+                        $item->quality++;
                     }
                     if ($item->sell_in < 0) {
                         $item->quality = 0;
                     }
                     break;
                 case 'Conjured Mana Muffin':
-                    if ($item->quality > 0) {
-                        $item->quality--;
-                    }
+                    $item->quality--;
                     if ($item->sell_in < 0) {
-                        if ($item->quality > 0) {
-                            $item->quality--;
-                        }
+                        $item->quality--;
                     }
                 default:
-                    if ($item->quality > 0) {
+                    $item->quality--;
+                    if ($item->sell_in < 0) {
                         $item->quality--;
                     }
-                    if ($item->sell_in < 0) {
-                        if ($item->quality > 0) {
-                            $item->quality--;
-                        }
-                    }
                     break;
+            }
+
+            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
+                $item->sell_in--;
+                if ($item->quality > 50) {
+                    $item->quality = 50;
+                }
+                if ($item->quality < 0) {
+                    $item->quality = 0;
+                }
             }
         }
     }
