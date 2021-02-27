@@ -5,8 +5,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use GildedRose\GildedRose;
 use GildedRose\Item;
 
-echo "OMGHAI!" . PHP_EOL;
-
 $items = array(
     new Item('+5 Dexterity Vest', 10, 20),
     new Item('Aged Brie', 2, 0),
@@ -16,8 +14,8 @@ $items = array(
     new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20),
     new Item('Backstage passes to a TAFKAL80ETC concert', 10, 49),
     new Item('Backstage passes to a TAFKAL80ETC concert', 5, 49),
-    // this conjured item does not work properly yet
-    new Item('Conjured Mana Cake', 3, 6)
+    // this new type - conjured item should work fine now
+    new Item('Conjured Mana Muffin', 5, 20)
 );
 
 $app = new GildedRose($items);
