@@ -57,6 +57,10 @@ final class GildedRose
     {
         foreach ($this->items as $item) {
 
+            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
+                $item->sell_in--;
+            }
+
             switch ($item->name) {
                 case 'Sulfuras, Hand of Ragnaros':
                     break;
@@ -92,7 +96,6 @@ final class GildedRose
             }
 
             if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                $item->sell_in--;
                 if ($item->quality > self::SETTINGS['highestQuality']) {
                     $item->quality = self::SETTINGS['highestQuality'];
                 }
