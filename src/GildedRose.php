@@ -11,6 +11,27 @@ namespace GildedRose;
 final class GildedRose
 {
     /**
+     * Some basic settings that define how GildedRose functions
+     *
+     * @var array SETTINGS
+     */
+    private const SETTINGS = [
+        'lowestQuality' => 0, // The lowest quality an Item can have.
+        'highestQuality' => 50, // The highest quality a non-legendary Item can have.
+        'legendaryQuality' => 80, // The special quality of a legendary Item.
+        'fasterQualityGain' => 10, // The number of days before the concert date, when passes double gaining quality.
+        'fastestQualityGain' => 5, // The number of days before the concert date, when passes triple gaining quality.
+    ];
+
+    /**
+     * The sell by date. 0 (obviously). Declared for readability, not to be changed.
+     * The sell in parameter means how many days until this deadline (negative means days after).
+     *
+     * @var int DEADLINE
+     */
+    private const DEADLINE = 0;
+
+    /**
      * The array of Items for sale in the GildedRose.
      *
      * @var Item[] $items
@@ -41,30 +62,30 @@ final class GildedRose
                     break;
                 case 'Aged Brie':
                     $item->quality++;
-                    if ($item->sell_in < 0) {
+                    if ($item->sell_in < self::DEADLINE) {
                         $item->quality++;
                     }
                     break;
                 case 'Backstage passes to a TAFKAL80ETC concert':
                     $item->quality++;
-                    if ($item->sell_in < 10) {
+                    if ($item->sell_in < self::SETTINGS['fasterQualityGain']) {
                         $item->quality++;
                     }
-                    if ($item->sell_in < 5) {
+                    if ($item->sell_in < self::SETTINGS['fastestQualityGain']) {
                         $item->quality++;
                     }
-                    if ($item->sell_in < 0) {
-                        $item->quality = 0;
+                    if ($item->sell_in < self::DEADLINE) {
+                        $item->quality = self::SETTINGS['lowestQuality'];
                     }
                     break;
                 case 'Conjured Mana Muffin':
                     $item->quality--;
-                    if ($item->sell_in < 0) {
+                    if ($item->sell_in < self::DEADLINE) {
                         $item->quality--;
                     }
                 default:
                     $item->quality--;
-                    if ($item->sell_in < 0) {
+                    if ($item->sell_in < self::DEADLINE) {
                         $item->quality--;
                     }
                     break;
@@ -72,11 +93,11 @@ final class GildedRose
 
             if ($item->name != 'Sulfuras, Hand of Ragnaros') {
                 $item->sell_in--;
-                if ($item->quality > 50) {
-                    $item->quality = 50;
+                if ($item->quality > self::SETTINGS['highestQuality']) {
+                    $item->quality = self::SETTINGS['highestQuality'];
                 }
-                if ($item->quality < 0) {
-                    $item->quality = 0;
+                if ($item->quality < self::SETTINGS['lowestQuality']) {
+                    $item->quality = self::SETTINGS['lowestQuality'];
                 }
             }
         }
