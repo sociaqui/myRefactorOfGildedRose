@@ -13,7 +13,7 @@ final class GildedRose
     /**
      * The array of Items for sale in the GildedRose.
      *
-     * @var Item[]
+     * @var Item[] $items
      */
     private $items;
 
@@ -35,56 +35,61 @@ final class GildedRose
     public function updateQuality(): void
     {
         foreach ($this->items as $item) {
-            if ($item->name != 'Aged Brie' and $item->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                if ($item->quality > 0) {
-                    if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                        $item->quality = $item->quality - 1;
-                        if ($item->name == 'Conjured Mana Muffin' && $item->quality > 0){
-                            $item->quality = $item->quality - 1;
-                        }
-                    }
-                }
-            } else {
-                if ($item->quality < 50) {
-                    $item->quality = $item->quality + 1;
-                    if ($item->name == 'Backstage passes to a TAFKAL80ETC concert') {
-                        if ($item->sell_in < 11) {
-                            if ($item->quality < 50) {
-                                $item->quality = $item->quality + 1;
-                            }
-                        }
-                        if ($item->sell_in < 6) {
-                            if ($item->quality < 50) {
-                                $item->quality = $item->quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
 
             if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                $item->sell_in = $item->sell_in - 1;
+                $item->sell_in--;
             }
 
-            if ($item->sell_in < 0) {
-                if ($item->name != 'Aged Brie') {
-                    if ($item->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                        if ($item->quality > 0) {
-                            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                                $item->quality = $item->quality - 1;
-                                if ($item->name == 'Conjured Mana Muffin' && $item->quality > 0){
-                                    $item->quality = $item->quality - 1;
-                                }
-                            }
+            switch ($item->name) {
+                case 'Sulfuras, Hand of Ragnaros':
+                    break;
+                case 'Aged Brie':
+                    if ($item->quality < 50) {
+                        $item->quality++;
+                    }
+                    if ($item->sell_in < 0) {
+                        if ($item->quality < 50) {
+                            $item->quality++;
                         }
-                    } else {
+                    }
+                    break;
+                case 'Backstage passes to a TAFKAL80ETC concert':
+                    if ($item->quality < 50) {
+                        $item->quality++;
+                    }
+                    if ($item->sell_in < 10) {
+                        if ($item->quality < 50) {
+                            $item->quality++;
+                        }
+                    }
+                    if ($item->sell_in < 5) {
+                        if ($item->quality < 50) {
+                            $item->quality++;
+                        }
+                    }
+                    if ($item->sell_in < 0) {
                         $item->quality = 0;
                     }
-                } else {
-                    if ($item->quality < 50) {
-                        $item->quality = $item->quality + 1;
+                    break;
+                case 'Conjured Mana Muffin':
+                    if ($item->quality > 0) {
+                        $item->quality--;
                     }
-                }
+                    if ($item->sell_in < 0) {
+                        if ($item->quality > 0) {
+                            $item->quality--;
+                        }
+                    }
+                default:
+                    if ($item->quality > 0) {
+                        $item->quality--;
+                    }
+                    if ($item->sell_in < 0) {
+                        if ($item->quality > 0) {
+                            $item->quality--;
+                        }
+                    }
+                    break;
             }
         }
     }
