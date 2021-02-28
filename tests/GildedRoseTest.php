@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 class GildedRoseTest extends TestCase
 {
     /**
-     * @covers       GildedRose::updateQuality()
+     * @covers       GildedRose\GildedRose::updateQuality()
      * @dataProvider updateQualityProvider
      *
      * @param Item $item

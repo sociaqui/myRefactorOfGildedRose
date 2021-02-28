@@ -42,7 +42,7 @@ class WareFactoryTest extends TestCase
     }
 
     /**
-     * @covers       WareFactoryFactory::build
+     * @covers       GildedRose\WareFactory::build
      * @dataProvider buildableClassDataProvider
      *
      * @param $itemName
