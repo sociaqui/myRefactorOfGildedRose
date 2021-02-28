@@ -4,6 +4,14 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use GildedRose\GildedRose;
 use GildedRose\Item;
+use GildedRose\WareFactory;
+use GildedRose\Wares\Common;
+use GildedRose\Wares\Conjured;
+use GildedRose\Wares\Legendary;
+use GildedRose\Wares\Ticket;
+use GildedRose\Wares\Uncommon;
+use GildedRose\Wares\WellAging;
+use GildedRose\WaresRegistry;
 
 $items = array(
     new Item('+5 Dexterity Vest', 10, 20),
@@ -18,7 +26,16 @@ $items = array(
     new Item('Conjured Mana Muffin', 5, 20)
 );
 
-$app = new GildedRose($items);
+$registry = new WaresRegistry();
+
+$registry->register(Common::class);
+$registry->register(Uncommon::class);
+$registry->register(Legendary::class);
+$registry->register(WellAging::class);
+$registry->register(Ticket::class);
+$registry->register(Conjured::class);
+
+$app = new GildedRose($items, new WareFactory($registry));
 
 $days = 2;
 if (count($argv) > 1) {
