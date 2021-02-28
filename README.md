@@ -117,14 +117,27 @@ The project uses composer to install:
 
 ## Folders
 
-- `src` - contains the two classes:
-  - `Item.php` - this class should not be changed.
-  - `GildedRose.php` - this class needs to be refactored, and the new feature added.
+- `src` - contains the two initial classes:
+  - `Item.php` - this class was left untouched, as per instructions.
+  - `GildedRose.php` - this class has been thoroughly refactored. (the new feature is mainly implemented by the new Ware and Conjured Classes).
+  and everything I added:
+  - `Wares` - contains the new extended Ware Classes.
+    - `Common.php` - run-of-the-mill, normal Items (which degrade over time).
+    - `Uncommon.php` - slightly rarer Items (no special behaviour in this version).
+    - `Legendary.php` - Items like "Sulfuras", with Quality equal to 80, and it never alters.
+    - `WellAging.php` - Items like "Aged Brie", which increase in Quality the older they get.
+    - `Ticket.php` - Items like "Backstage passes", which increase in Quality, but become worthless the day of the premiere/event.
+    - `Conjured.php` - Items that degrade in Quality twice as fast as normal items.
+  - `Ware.php` - Abstract Class - Decorator - allows to extend the Item Class
+  - `WareFactory.php` - builder of Wares (different versions of Items)
+  - `WareRegistry.php` - registry of Wares (Factory only builds from registered patterns)
 - `tests` - contains the tests
-  - `GildedRoseTest.php` - Starter test.
-  - `ApprovalTest.php` - alternative approval test (set to 30 days)
+  - `GildedRoseTest.php` - Completely rewritten the starter test (twice).
+  - `ItemTest.php` - Added a small test to check constructor and __toString() magic method.
+  - `WareFactoryTest.php` - Added separate test case to thoroughly check Factory.
+  - `ApprovalTest.php` - alternative approval test (set to 30 days) - actually untouched
 - `Fixture`
-  - `texttest_fixture.php` used by the approval test, or can be run from the command line
+  - `texttest_fixture.php` used by the approval test, or can be run from the command line - only slightly modified
 
 ## Testing
 
