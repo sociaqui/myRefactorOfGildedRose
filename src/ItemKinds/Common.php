@@ -30,7 +30,7 @@ class Common extends ItemKind
         'Vile Vambrace',
         'Mundane Staff of Mundanity',
         'Wooden Shield',
-        'Rusty Chainail',
+        'Rusty Chainmail',
         'Blunt Sword',
         'Dirty Buckler',
         'Not-so-clever Conjurers\' Balm',
