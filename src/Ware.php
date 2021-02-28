@@ -98,8 +98,8 @@ abstract class Ware
      */
     public function update(): void
     {
-        $this->updateSellIn();
         $this->updateQuality();
+        $this->updateSellIn();
         $this->expiresAfterSale();
     }
 

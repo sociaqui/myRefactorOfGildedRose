@@ -27,7 +27,7 @@ class WareFactory
      */
     public function build(Item $item): Ware
     {
-        return self::newObject($this->findWareInRegistryByName($item->name), $item);
+        return self::newObject($this->findWareInRegistryByItemName($item->name), $item);
     }
 
     protected function getWaresFromRegistry(): array
@@ -37,7 +37,7 @@ class WareFactory
 
     protected function getItemNamesFromRegistry(): array
     {
-        return $this->waresRegistry->getWares();
+        return $this->waresRegistry->getItemNames();
     }
 
     protected function findWareInRegistryByName($name): string
