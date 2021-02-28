@@ -42,6 +42,25 @@ abstract class ItemKind
      */
     protected static $lowestQuality = 0;
 
+    /**
+     * Quality step -- quality decreases by this amount each day.
+     *
+     * @var int
+     */
+    protected static $qualityStep = -1;
+
+    /**
+     * Quality step multiplayer range -- below how many days to the sell by date, the quality starts to change faster,
+     * and by how much (default: on the sell by day -- twice)
+     *
+     * After sale date; it's twice as fast
+     *
+     * @var array
+     */
+    protected static $qualityStepMultiplier = [
+        self::DEADLINE => 2,
+    ];
+
     /* End of default values for new Item Kind */
 
     /**
@@ -53,16 +72,16 @@ abstract class ItemKind
     private const DEADLINE = 0;
 
     /**
-     * @var
+     * @var Item
      */
     protected $item;
 
     /**
-     * Item Kind constructor.
+     * ItemOfAKind constructor.
      *
-     * @param $item
+     * @param Item $item
      */
-    public function __construct($item)
+    public function __construct(Item $item)
     {
         $this->item = $item;
     }
@@ -81,8 +100,7 @@ abstract class ItemKind
      */
     public function updateSellIn(): void
     {
-        //TODO: move the updating logic here from the Gilded Rose class
-        // so each Item Kind "knows" how to update itself
+        $this->getItem()->sell_in--;
     }
 
     /**
@@ -90,8 +108,54 @@ abstract class ItemKind
      */
     public function updateQuality(): void
     {
-        //TODO: move the updating logic here from the Gilded Rose class
-        // so each Item Kind "knows" how to update itself
+        $this->getItem()->quality = $this->getNewQuality();
+
+        if ($this->isQualityOverHighestValue()) {
+            $this->setToHighestQuality();
+        }
+        if ($this->isQualityUnderLowestValue()) {
+            $this->setToLowestQuality();
+        }
+    }
+
+    /**
+     * Returns the quality step multiplayer
+     * depending on sell in value and internal settings.
+     *
+     * @return int
+     */
+    public function getMultiplier(): int
+    {
+        $multiplier = 1;
+
+        foreach (static::$qualityStepMultiplier as $day => $dayMultiplier) {
+            if ($this->getItem()->sell_in <= $day) {
+                $multiplier = $dayMultiplier;
+            }
+        }
+
+        return $multiplier;
+    }
+
+    /**
+     * Returns the proper quality step of this Item
+     * taking into account the proper multiplier.
+     *
+     * @return int
+     */
+    public function getQualityStep(): int
+    {
+        return static::$qualityStep * $this->getMultiplier();
+    }
+
+    /**
+     * Returns the quality with a step
+     *
+     * @return int
+     */
+    public function getNewQuality(): int
+    {
+        return $this->item->quality + $this->getQualityStep();
     }
 
     /**
@@ -122,5 +186,39 @@ abstract class ItemKind
     public static function getLowestQuality(): int
     {
         return static::$lowestQuality;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isQualityOverHighestValue(): bool
+    {
+        return $this->getItem()->quality > $this->getHighestQuality();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isQualityUnderLowestValue(): bool
+    {
+        return $this->getItem()->quality < $this->getLowestQuality();
+    }
+
+    /**
+     * @return void
+     */
+    protected function setToHighestQuality(): void
+    {
+        $this->getItem()->quality = $this->getHighestQuality();
+    }
+
+    /**
+     * Sets Item Quality to it's lowest possible value.
+     *
+     * @return void
+     */
+    protected function setToLowestQuality(): void
+    {
+        $this->getItem()->quality = $this->getLowestQuality();
     }
 }
