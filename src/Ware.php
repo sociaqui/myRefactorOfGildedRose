@@ -10,6 +10,9 @@ namespace GildedRose;
  */
 abstract class Ware
 {
+    //TODO: What about "mixed" Wares like a Conjured Well Aging Item or a Legendary Ticket?
+    // -- not with this solution, but with Traits maybe? (what rules would they even follow tho?)
+
     /* The default values for a new type of Ware */
 
     /**

@@ -93,24 +93,10 @@ class GildedRoseTest extends TestCase
             //Legendary Item, neither stat changes
             [
                 'item' =>
-                    new Item('Sulfuras, Hand of Ragnaros', 10, 66),
-
-                'expected' =>
-                    new Item('Sulfuras, Hand of Ragnaros', 10, 66),
-            ],
-            [
-                'item' =>
                     new Item('Sulfuras, Hand of Ragnaros', 0, 80),
 
                 'expected' =>
                     new Item('Sulfuras, Hand of Ragnaros', 0, 80),
-            ],
-            [
-                'item' =>
-                    new Item('Sulfuras, Hand of Ragnaros', -5, 99),
-
-                'expected' =>
-                    new Item('Sulfuras, Hand of Ragnaros', -5, 99),
             ],
             //Well Aging Item => actually increases in Quality the older it gets, but not over 50
             [
@@ -329,9 +315,6 @@ class GildedRoseTest extends TestCase
                 'expected' =>
                     new Item('Conjured Mana Muffin', -4, 0),
             ],
-            //TODO: Make Legendary, Well Aging, Concert Passes and Conjured a category, a tag or a parameter of the Item
-            // so that new items can be easily added that behave the same way -- done, with Decorator and Factories
-            //TODO: What about "mixed" tags/categories like a Conjured Well Aging Item? -- not with this solution, with Traits maybe?
         ];
     }
 }
