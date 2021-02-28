@@ -11,6 +11,27 @@ namespace GildedRose;
 final class GildedRose
 {
     /**
+     * Some basic settings that define how GildedRose functions
+     *
+     * @var array SETTINGS
+     */
+    private const SETTINGS = [
+        'lowestQuality' => 0, // The lowest quality an Item can have.
+        'highestQuality' => 50, // The highest quality a non-legendary Item can have.
+        'legendaryQuality' => 80, // The special quality of a legendary Item.
+        'fasterQualityGain' => 10, // The number of days before the concert date, when passes double gaining quality.
+        'fastestQualityGain' => 5, // The number of days before the concert date, when passes triple gaining quality.
+    ];
+
+    /**
+     * The sell by date. 0 (obviously). Declared for readability, not to be changed.
+     * The sell in parameter means how many days until this deadline (negative means days after).
+     *
+     * @var int DEADLINE
+     */
+    private const DEADLINE = 0;
+
+    /**
      * The array of Items for sale in the GildedRose.
      *
      * @var Item[] $items
