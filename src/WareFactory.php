@@ -73,4 +73,36 @@ class WareFactory
     {
         return new $className($item);
     }
+
+    /**
+     * Item maker. Make an Item following given Ware Class limitations.
+     * Provide a name and/or sell in value and/or quality value
+     * or let the semi-random generator decide for you.
+     *
+     * @param string|Ware $wareClass
+     * @param string|null $name
+     * @param int|null $sellIn
+     * @param int|null $quality
+     *
+     * @return Item
+     */
+    public static function makeItem(string $wareClass, ?string $name = null, ?int $sellIn = null, ?int $quality = null): Item
+    {
+        // If no name was provided to constructor -- get a semi-random one!
+        if (is_null($name)) {
+            $name = $wareClass::generateName();
+        }
+
+        // If no sell in value was provided to constructor -- get a semi-random one!
+        if (is_null($sellIn)) {
+            $sellIn = $wareClass::generateSellInValue();
+        }
+
+        // If no quality was provided to constructor -- get a semi-random one!
+        if (is_null($quality)) {
+            $quality = $wareClass::generateQualityValue();
+        }
+
+        return new Item($name, $sellIn, $quality);
+    }
 }

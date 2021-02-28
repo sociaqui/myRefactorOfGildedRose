@@ -93,37 +93,6 @@ abstract class Ware
     }
 
     /**
-     * Item maker. Make an Item following chosen Class
-     * Provide a name and/or sell in value and/or quality value
-     * or let the semi-random generator decide for you.
-     *
-     * @param string|null $name
-     * @param int|null $sellIn
-     * @param int|null $quality
-     *
-     * @return Item
-     */
-    public static function makeItem(?string $name = null, ?int $sellIn = null, ?int $quality = null): Item
-    {
-        // If no name was provided to constructor -- get a semi-random one!
-        if (is_null($name)) {
-            $name = self::generateName();
-        }
-
-        // If no sell in value was provided to constructor -- get a semi-random one!
-        if (is_null($sellIn)) {
-            $sellIn = self::generateSellInValue();
-        }
-
-        // If no quality was provided to constructor -- get a semi-random one!
-        if (is_null($quality)) {
-            $quality = self::generateQualityValue();
-        }
-
-        return new Item($name, $sellIn, $quality);
-    }
-
-    /**
      * Updates the sell in and quality values.
      * If Item is perishable, it expires after the sale by date
      */
@@ -297,7 +266,7 @@ abstract class Ware
      *
      * @return string
      */
-    protected static function generateName(): string
+    public static function generateName(): string
     {
         return self::randomArrayElement(self::ITEM_NAMES);
     }
@@ -307,7 +276,7 @@ abstract class Ware
      *
      * @return int
      */
-    protected static function generateSellInValue(): int
+    public static function generateSellInValue(): int
     {
         return rand(self::DEADLINE, 99);
     }
@@ -317,7 +286,7 @@ abstract class Ware
      *
      * @return int
      */
-    protected static function generateQualityValue(): int
+    public static function generateQualityValue(): int
     {
         return rand(self::getLowestQuality(), self::getHighestQuality());
     }
