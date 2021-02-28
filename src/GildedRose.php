@@ -15,16 +15,25 @@ final class GildedRose
      *
      * @var Item[] $items
      */
-    private $items;
+    private static $items = [];
 
     /**
-     * GildedRose constructor. Requires an array of Items to be passed.
+     * @var WareFactory
+     */
+    public static $wareFactory;
+
+    /**
+     * GildedRose constructor.
+     * Requires an array of Items (current inventory) to be passed.
+     * Requires a WareFactory (builder of Wares) to be passed.
      *
      * @param array $items
+     * @param WareFactory $wareFactory
      */
-    public function __construct(array $items)
+    public function __construct(array $items, WareFactory $wareFactory)
     {
-        $this->items = $items;
+        static::$items = $items;
+        static::$wareFactory = $wareFactory;
     }
 
     /**
@@ -34,54 +43,8 @@ final class GildedRose
      */
     public function updateQuality(): void
     {
-        foreach ($this->items as $item) {
-
-            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                $item->sell_in--;
-            }
-
-            switch ($item->name) {
-                case 'Sulfuras, Hand of Ragnaros':
-                    break;
-                case 'Aged Brie':
-                    $item->quality++;
-                    if ($item->sell_in < self::DEADLINE) {
-                        $item->quality++;
-                    }
-                    break;
-                case 'Backstage passes to a TAFKAL80ETC concert':
-                    $item->quality++;
-                    if ($item->sell_in < self::SETTINGS['fasterQualityGain']) {
-                        $item->quality++;
-                    }
-                    if ($item->sell_in < self::SETTINGS['fastestQualityGain']) {
-                        $item->quality++;
-                    }
-                    if ($item->sell_in < self::DEADLINE) {
-                        $item->quality = self::SETTINGS['lowestQuality'];
-                    }
-                    break;
-                case 'Conjured Mana Muffin':
-                    $item->quality--;
-                    if ($item->sell_in < self::DEADLINE) {
-                        $item->quality--;
-                    }
-                default:
-                    $item->quality--;
-                    if ($item->sell_in < self::DEADLINE) {
-                        $item->quality--;
-                    }
-                    break;
-            }
-
-            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                if ($item->quality > self::SETTINGS['highestQuality']) {
-                    $item->quality = self::SETTINGS['highestQuality'];
-                }
-                if ($item->quality < self::SETTINGS['lowestQuality']) {
-                    $item->quality = self::SETTINGS['lowestQuality'];
-                }
-            }
+        foreach (static::$items as $item) {
+            static::$wareFactory->build($item)->update();
         }
     }
 }
