@@ -61,6 +61,14 @@ abstract class ItemKind
         self::DEADLINE => 2,
     ];
 
+    /**
+     * Determines whether the Item Kind is perishable or not (loses all quality after the sale by date)
+     * False by default.
+     *
+     * @var bool
+     */
+    protected static $perishable = false;
+
     /* End of default values for new Item Kind */
 
     /**
@@ -69,7 +77,7 @@ abstract class ItemKind
      *
      * @var int DEADLINE
      */
-    private const DEADLINE = 0;
+    protected const DEADLINE = 0;
 
     /**
      * @var Item
@@ -87,12 +95,45 @@ abstract class ItemKind
     }
 
     /**
-     *  Updates the sell in and quality values.
+     * Item maker
+     * Provide a name and/or sell in value and/or quality value
+     * or let the semi-random generator decide for you.
+     *
+     * @param string|null $name
+     * @param int|null $sellIn
+     * @param int|null $quality
+     *
+     * @return Item
+     */
+    public static function makeItem(?string $name = null, ?int $sellIn = null, ?int $quality = null): Item
+    {
+        // If no name was provided to constructor -- get a semi-random one!
+        if (is_null($name)) {
+            $name = self::generateName();
+        }
+
+        // If no sell in value was provided to constructor -- get a semi-random one!
+        if (is_null($sellIn)) {
+            $sellIn = self::generateSellInValue();
+        }
+
+        // If no quality was provided to constructor -- get a semi-random one!
+        if (is_null($quality)) {
+            $quality = self::generateQualityValue();
+        }
+
+        return new Item($name, $sellIn, $quality);
+    }
+
+    /**
+     * Updates the sell in and quality values.
+     * If Item is perishable, it expires after the sale by date
      */
     public function update(): void
     {
         $this->updateSellIn();
         $this->updateQuality();
+        $this->expiresAfterSale();
     }
 
     /**
@@ -220,5 +261,78 @@ abstract class ItemKind
     protected function setToLowestQuality(): void
     {
         $this->getItem()->quality = $this->getLowestQuality();
+    }
+
+    /**
+     * Returns true if the Item is past the sale by date
+     *
+     * @return bool
+     */
+    public function isAfterSale(): bool
+    {
+        return $this->item->sell_in < self::DEADLINE;
+    }
+
+    /**
+     * Returns true if the Item is perishable (loses all quality after the sale by date)
+     *
+     * @return bool
+     */
+    public function isPerishable(): bool
+    {
+        return static::$perishable;
+    }
+
+    /**
+     * Changes the quality to the lowest possible value for the Item Kind if Item Kind is perishable
+     * and the date is after the sell by date.
+     */
+    public function expiresAfterSale(): void
+    {
+        if ($this->isPerishable() && $this->isAfterSale()) {
+            $this->setToLowestQuality();
+        }
+    }
+
+    /**
+     * Randomly return one of the names in the ITEM_NAMES array
+     *
+     * @return string
+     */
+    protected static function generateName(): string
+    {
+        return self::randomArrayElement(self::ITEM_NAMES);
+    }
+
+    /**
+     * Randomly return a value between the sell by DEADLINE and 99
+     *
+     * @return int
+     */
+    protected static function generateSellInValue(): int
+    {
+        return rand(self::DEADLINE, 99);
+    }
+
+    /**
+     * Randomly return a value between the lowest and highest possible qualities for this ItemKind
+     *
+     * @return int
+     */
+    protected static function generateQualityValue(): int
+    {
+        return rand(self::getLowestQuality(), self::getHighestQuality());
+    }
+
+    /**
+     * Returns a random element from the provided array
+     *
+     * @param array $possibilities
+     *
+     * @return mixed
+     */
+    protected static function randomArrayElement(array $possibilities)
+    {
+        return $possibilities[rand(0, count($possibilities))];
     }
 }
