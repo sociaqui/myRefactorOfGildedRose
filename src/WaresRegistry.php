@@ -31,7 +31,7 @@ class WaresRegistry
      * Adds a ware to the wares list
      * and it's item name list to the item names list
      *
-     * @param string|Ware $ware
+     * @param class-string $ware
      */
     public function register(string $ware): void
     {

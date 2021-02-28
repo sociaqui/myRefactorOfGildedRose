@@ -13,6 +13,10 @@ class WareFactory
      */
     private $waresRegistry;
 
+    /**
+     * WareFactory constructor.
+     * @param WaresRegistry $wareFactoryRegistry
+     */
     public function __construct(WaresRegistry $wareFactoryRegistry)
     {
         $this->waresRegistry = $wareFactoryRegistry;
@@ -30,17 +34,29 @@ class WareFactory
         return self::newObject($this->findWareInRegistryByItemName($item->name), $item);
     }
 
+    /**
+     * @return array
+     */
     protected function getWaresFromRegistry(): array
     {
         return $this->waresRegistry->getWares();
     }
 
+    /**
+     * @return array
+     */
     protected function getItemNamesFromRegistry(): array
     {
         return $this->waresRegistry->getItemNames();
     }
 
-    protected function findWareInRegistryByName($name): string
+    /**
+     * Finds a Ware Class in the Registry by it's name.
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function findWareInRegistryByName(string $name): string
     {
         $wares = $this->getWaresFromRegistry();
         if (array_key_exists($name, $wares)) {
@@ -50,7 +66,13 @@ class WareFactory
         }
     }
 
-    protected function findWareInRegistryByItemName($itemName): string
+    /**
+     * Finds a Ware Class in the Registry by the name of an Item assigned to it.
+     *
+     * @param string $itemName
+     * @return string
+     */
+    protected function findWareInRegistryByItemName(string $itemName): string
     {
         $itemNames = $this->getItemNamesFromRegistry();
         if (array_key_exists($itemName, $itemNames)) {
@@ -79,7 +101,7 @@ class WareFactory
      * Provide a name and/or sell in value and/or quality value
      * or let the semi-random generator decide for you.
      *
-     * @param string|Ware $wareClass
+     * @param class-string $wareClass
      * @param string|null $name
      * @param int|null $sellIn
      * @param int|null $quality

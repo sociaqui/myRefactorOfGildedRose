@@ -13,6 +13,7 @@ use GildedRose\Wares\Ticket;
 use GildedRose\Wares\Uncommon;
 use GildedRose\Wares\WellAging;
 use GildedRose\WaresRegistry;
+use PHPStan\Type\ClassStringType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -45,10 +46,10 @@ class WareFactoryTest extends TestCase
      * @covers       GildedRose\WareFactory::build
      * @dataProvider buildableClassDataProvider
      *
-     * @param $itemName
-     * @param $expectedClass
+     * @param string $itemName
+     * @param class-string $expectedClass
      */
-    public function testIfBuildsTheRightClass($itemName, $expectedClass)
+    public function testIfBuildsTheRightClass(string $itemName, string $expectedClass): void
     {
         $this->waresRegistry
             ->expects($this->any())
