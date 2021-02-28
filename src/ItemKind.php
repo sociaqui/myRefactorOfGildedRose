@@ -95,7 +95,7 @@ abstract class ItemKind
     }
 
     /**
-     * Item maker
+     * Item maker. Make an Item following chosen Kind
      * Provide a name and/or sell in value and/or quality value
      * or let the semi-random generator decide for you.
      *
@@ -333,6 +333,6 @@ abstract class ItemKind
      */
     protected static function randomArrayElement(array $possibilities)
     {
-        return $possibilities[rand(0, count($possibilities))];
+        return $possibilities[rand(0, count($possibilities)-1)];
     }
 }
