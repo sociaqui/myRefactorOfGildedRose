@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GildedRose\Wares;
 
+use GildedRose\Item;
 use GildedRose\Ware;
 
 /**
@@ -52,12 +53,13 @@ class Legendary extends Ware
      * Legendary Item constructor. Legendary Items will always have a quality of 80.
      * Provide a name and/or sell in value or let the semi-random generator decide for you.
      *
-     * @param string|null $name
-     * @param int|null $sellIn
+     * @param Item $item
      */
-    public function __construct(?string $name = null, ?int $sellIn = null)
+    public function __construct(Item $item)
     {
-        parent::__construct($name, $sellIn, self::QUALITY);
+        $item->quality = self::QUALITY;
+
+        parent::__construct($item);
     }
 
     /**
