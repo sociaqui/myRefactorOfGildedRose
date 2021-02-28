@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace GildedRose;
 
-use GildedRose\Item;
-
 /**
- * Class ItemKind
+ * Class Ware
  * @package \GildedRose
  */
-abstract class ItemKind
+abstract class Ware
 {
-    /* The default values for a new Item Kind */
+    /* The default values for a new type of Ware */
 
     /**
-     * The name of the Item Kind
+     * The name of the Ware
      *
      * @var string
      */
@@ -29,14 +27,14 @@ abstract class ItemKind
     const ITEM_NAMES = [];
 
     /**
-     * The highest quality an Item of this Kind can have.
+     * The highest quality an Item of this Class can have.
      *
      * @var int
      */
     protected static $highestQuality = 50;
 
     /**
-     * The lowest quality an Item of this Kind can have.
+     * The lowest quality an Item of this Class can have.
      *
      * @var int
      */
@@ -62,14 +60,14 @@ abstract class ItemKind
     ];
 
     /**
-     * Determines whether the Item Kind is perishable or not (loses all quality after the sale by date)
+     * Determines whether the Ware is perishable or not (loses all quality after the sale by date)
      * False by default.
      *
      * @var bool
      */
     protected static $perishable = false;
 
-    /* End of default values for new Item Kind */
+    /* End of default values for new Ware */
 
     /**
      * The sell by date. 0 (obviously). Declared for readability, not to be changed.
@@ -85,7 +83,7 @@ abstract class ItemKind
     protected $item;
 
     /**
-     * ItemOfAKind constructor.
+     * Ware constructor.
      *
      * @param Item $item
      */
@@ -95,7 +93,7 @@ abstract class ItemKind
     }
 
     /**
-     * Item maker. Make an Item following chosen Kind
+     * Item maker. Make an Item following chosen Class
      * Provide a name and/or sell in value and/or quality value
      * or let the semi-random generator decide for you.
      *
@@ -210,7 +208,7 @@ abstract class ItemKind
     }
 
     /**
-     * Returns the highest quality an Item of this Kind can have.
+     * Returns the highest quality an Item of this Class can have.
      *
      * @return int
      */
@@ -220,7 +218,7 @@ abstract class ItemKind
     }
 
     /**
-     * Returns the lowest quality an Item of this Kind can have.
+     * Returns the lowest quality an Item of this Class can have.
      *
      * @return int
      */
@@ -284,7 +282,7 @@ abstract class ItemKind
     }
 
     /**
-     * Changes the quality to the lowest possible value for the Item Kind if Item Kind is perishable
+     * Changes the quality to the lowest possible value for the Ware if Ware is perishable
      * and the date is after the sell by date.
      */
     public function expiresAfterSale(): void
@@ -315,7 +313,7 @@ abstract class ItemKind
     }
 
     /**
-     * Randomly return a value between the lowest and highest possible qualities for this ItemKind
+     * Randomly return a value between the lowest and highest possible qualities for this Ware
      *
      * @return int
      */

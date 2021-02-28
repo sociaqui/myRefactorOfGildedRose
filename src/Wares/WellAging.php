@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace GildedRose\ItemKinds;
+namespace GildedRose\Wares;
 
-use GildedRose\ItemKind;
+use GildedRose\Ware;
 
 /**
  * Class WellAging
- * @package GildedRose\ItemKinds
+ * @package GildedRose\Wares
  */
-class WellAging extends ItemKind
+class WellAging extends Ware
 {
     /**
      * @inheritdoc

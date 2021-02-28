@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace GildedRose\ItemKinds;
+namespace GildedRose\Wares;
 
-use GildedRose\ItemKind;
+use GildedRose\Ware;
 
 /**
  * Class Common
- * @package GildedRose\ItemKinds
+ * @package GildedRose\Wares
  */
-class Legendary extends ItemKind
+class Legendary extends Ware
 {
     /**
      * @inheritdoc
