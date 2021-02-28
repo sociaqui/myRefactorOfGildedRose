@@ -6,24 +6,42 @@ namespace Tests;
 
 use GildedRose\GildedRose;
 use GildedRose\Item;
+use GildedRose\WareFactory;
+use GildedRose\Wares\Common;
+use GildedRose\Wares\Conjured;
+use GildedRose\Wares\Legendary;
+use GildedRose\Wares\Ticket;
+use GildedRose\Wares\Uncommon;
+use GildedRose\Wares\WellAging;
+use GildedRose\WaresRegistry;
 use PHPUnit\Framework\TestCase;
 
 class GildedRoseTest extends TestCase
 {
     /**
-     * @covers       GildedRose\GildedRose::updateQuality()
-     * @param Item   $item
-     * @param Item   $expected
-     *
+     * @covers       GildedRose::updateQuality()
      * @dataProvider updateQualityProvider
+     *
+     * @param Item $item
+     * @param Item $expected
      */
     public function testUpdateQuality(Item $item, Item $expected): void
     {
-        $gildedRose = new GildedRose([$item]);
+        $registry = new WaresRegistry();
+        $registry->register(Common::class);
+        $registry->register(Uncommon::class);
+        $registry->register(Legendary::class);
+        $registry->register(WellAging::class);
+        $registry->register(Ticket::class);
+        $registry->register(Conjured::class);
+        $gildedRose = new GildedRose([$item], new WareFactory($registry));
         $gildedRose->updateQuality();
         $this->assertSame((string)$expected, (string)$item);
     }
 
+    /**
+     * @return array
+     */
     public function updateQualityProvider(): array
     {
         return [
@@ -312,8 +330,8 @@ class GildedRoseTest extends TestCase
                     new Item('Conjured Mana Muffin', -4, 0),
             ],
             //TODO: Make Legendary, Well Aging, Concert Passes and Conjured a category, a tag or a parameter of the Item
-            // so that new items can be easily added that behave the same way
-            //TODO: What about "mixed" tags/categories like a Conjured Well Aging Item?
+            // so that new items can be easily added that behave the same way -- done, with Decorator and Factories
+            //TODO: What about "mixed" tags/categories like a Conjured Well Aging Item? -- not with this solution, with Traits maybe?
         ];
     }
 }
