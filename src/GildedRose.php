@@ -25,7 +25,7 @@ final class GildedRose
 
     /**
      * The sell by date. 0 (obviously). Declared for readability, not to be changed.
-     * The sell in parameter means how many days until this deadline (negative means days after).
+     * Each Item's sell in parameter means how many days until this deadline (negative sell in means days after).
      *
      * @var int DEADLINE
      */
